@@ -7,17 +7,17 @@
 
 class Xcode
 
-
-
-
-
+#	“Stacking” Messages
+	
 	@@logDepth = 0
-
-	def groupStart (message = " ")
+	
+	def self.groupStart (message = " ")
 	
 		self.log message 
 
-		@@logDepth = @@logDepth + 1
+		@@logDepth += 1
+		
+		return self
 	
 	end
 
@@ -25,11 +25,13 @@ class Xcode
 
 
 	
-	def groupEnd (message = "")
+	def self.groupEnd (message = "")
 		
-		self.log message if (!message.empty?)
+		self.log message
 		
-		@@logDepth = @@logDepth - 1
+		@@logDepth -= 1
+		
+		return self
 	
 	end
 
@@ -37,9 +39,19 @@ class Xcode
 
 
 
-	def warn (message = " ")
+	def self.warn (message = " ")
 	
-		_display("warning", message)
+		return self.display("warning", message)
+		
+	end
+
+
+
+
+	
+	def self.error (message = " ")
+	
+		return self.display("error", message)
 	
 	end
 
@@ -47,19 +59,9 @@ class Xcode
 
 
 	
-	def error (message = " ")
+	def self.log (message = " ")
 	
-		_display("error", message)
-	
-	end
-
-
-
-
-	
-	def log (message = " ")
-	
-		_display("", message)
+		return self.display("", message)
 	
 	end
 	
@@ -67,21 +69,13 @@ class Xcode
 	
 	
 	
-	private
+	def self.display (type = "warning", message = "")
 	
-	def _display (type = "warning", message = "")
+		return self if message.empty?
 	
-		padding = "        " * @@logDepth
+		puts "#{"        " * @@logDepth}#{type.empty? ? "" : type + ": "}#{message}" 
 		
-		if (type.empty?)
-		
-			puts "#{padding}#{message}"
-
-		else 
-		
-			puts "#{padding}#{type}: #{message}"
-		
-		end
+		return self
 	
 	end
 
