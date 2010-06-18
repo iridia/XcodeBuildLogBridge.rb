@@ -78,6 +78,18 @@ class Xcode
 		return self
 	
 	end
+	
+	
+	
+	
+	
+	def self.assert (conditional = true, message = "", type = "warning")
+	
+		self.display(type, message) if !conditional
+	
+		return conditional
+	
+	end
 
 
 
